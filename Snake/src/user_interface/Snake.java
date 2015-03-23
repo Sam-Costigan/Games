@@ -1,5 +1,6 @@
-import java.awt.Color;
+package user_interface;
 
+import java.awt.Color;
 import javax.swing.*;
 
 /**
@@ -18,7 +19,7 @@ public class Snake extends JFrame {
 		add(board);
 		board.start();
 		
-		setSize(416,439);
+		setSize(416,438);
 		setTitle("Snake");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
