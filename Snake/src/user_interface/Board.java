@@ -19,15 +19,26 @@ public class Board extends JPanel implements ActionListener {
 	private static final int squareSize = 10;
 	private Player player;
 	private Goal goal;
-	private boolean setup = false;
+	private int score = 0;
 	
-	public Board() {
-		initBoard();
+	private JLabel statusbar;
+	
+	//private Difficulty diff = new Difficulty();
+	
+	// Flags
+	private boolean setup = false;
+	private boolean newGoal = false;
+	private boolean hit = false;
+	
+	public Board(Snake parent) {
+		initBoard(parent);
 	}
 	
-	private void initBoard() {
-		timer = new Timer(200, this);
+	private void initBoard(Snake parent) {
+		timer = new Timer(100, this);
 		timer.start();
+		
+		statusbar = parent.getStatusbar();
 		
 		setFocusable(true);
 		setBackground(Color.BLACK);
@@ -40,6 +51,10 @@ public class Board extends JPanel implements ActionListener {
 		
 		if(!setup) {
 			setup = setupBoard();
+		}
+		
+		if(newGoal) {
+			newGoal = updateBoard();
 		}
 		
 		drawGoal(g);
@@ -55,20 +70,37 @@ public class Board extends JPanel implements ActionListener {
 		return true;
 	}
 	
+	private boolean updateBoard() {
+		Dimension size = getSize();
+		
+		setupGoal(size);
+		updateScore();
+		player.addSegment();
+		statusbar.setText(String.valueOf(score));
+		
+		return true;
+	}
+	
 	private void setupPlayer(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
 		player = new Player(randX, randY, squareSize);
 	}
 	
-	private void setupGoal(Dimension size) {
+	private boolean setupGoal(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
 		goal = new Goal(randX, randY);
+		
+		return false;
 	}
 	
 	private int roundUp(int num, int round) {
 		return (int) Math.ceil(num / round) * round;
+	}
+	
+	private void updateScore() {
+		score = score + 1;
 	}
 	
 	private void drawPlayer(Graphics g) {
@@ -96,6 +128,18 @@ public class Board extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		player.move(squareSize);
+		Dimension size = getSize();
+		
+		newGoal = player.detectGoalCollision(goal);
+		hit = player.detectWallCollision(size);
+		if(hit != true) {
+			hit = player.detectSelfCollision();
+		}
+		
+		if(hit == true) {
+			timer.stop();
+		}
+		
 		repaint();
 	}
 	
