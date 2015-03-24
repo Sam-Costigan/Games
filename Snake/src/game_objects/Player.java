@@ -115,7 +115,7 @@ public class Player {
 	}
 	
 	public boolean detectWallCollision(Dimension size) {
-		if(posX > (size.getWidth() - squareSize) || posY > (size.getWidth() - squareSize)) {
+		if(posX > (size.getWidth()) || posY > (size.getWidth())) {
 			return true;
 		}
 		if(posX < 0 || posY < 0) {

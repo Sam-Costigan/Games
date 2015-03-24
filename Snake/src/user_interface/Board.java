@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.*;
+import sun.audio.*;
 
 import javax.swing.*;
 
@@ -25,6 +27,8 @@ public class Board extends JPanel implements ActionListener {
 	
 	private Snake parent;
 	private JLabel statusbar;
+	
+	private ContinuousAudioDataStream eat;
 	
 	//private Difficulty diff = new Difficulty();
 	
@@ -48,6 +52,19 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
+		try {
+			String eatFile = "resources/eat.wav";
+			InputStream in = new FileInputStream(eatFile);
+			
+			AudioStream eatStream = new AudioStream(in);
+			
+			AudioData data = eatStream.getData();
+			ContinuousAudioDataStream  eat = new ContinuousAudioDataStream (data);
+			
+		} catch(IOException e) {
+			System.out.println(e);
+		}
+		
 	}
 	
 	private void drawStart(Graphics g) {
@@ -58,10 +75,6 @@ public class Board extends JPanel implements ActionListener {
 		
 		if(!setup) {
 			setup = setupBoard();
-		}
-		
-		if(newGoal) {
-			newGoal = updateBoard();
 		}
 		
 		drawGoal(g);
@@ -98,7 +111,7 @@ public class Board extends JPanel implements ActionListener {
 	private boolean updateBoard() {
 		Dimension size = getSize();
 		
-		System.out.println("yes");
+		System.out.println(size);
 		
 		setupGoal(size);
 		updateScore();
@@ -144,7 +157,6 @@ public class Board extends JPanel implements ActionListener {
 	
 	public void start() {
 		initBoard();
-		//setupBoard();
 		isRunning = true;
 		repaint();
 		
@@ -176,6 +188,12 @@ public class Board extends JPanel implements ActionListener {
 				hit = player.detectWallCollision(size);
 				if(hit != true) {
 					hit = player.detectSelfCollision();
+				}
+				
+				if(newGoal) {
+					AudioPlayer.player.start(eat);
+					AudioPlayer.player.stop(eat);
+					updateBoard();
 				}
 				
 				if(hit == true) {

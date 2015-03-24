@@ -30,12 +30,9 @@ public class Snake extends JFrame implements ActionListener {
 		statusbar.setOpaque(false);
 		statusbar.setForeground(Color.WHITE);
 		
-		//createMenuBar();
-		Board board = new Board(this);
-		add(board);
-		board.start();
+		createMenuBar();
 		
-		setSize(416,454);
+		setSize(416,438);
 		setTitle("Snake");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
