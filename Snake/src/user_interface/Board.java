@@ -2,12 +2,14 @@ package user_interface;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
 
@@ -21,6 +23,7 @@ public class Board extends JPanel implements ActionListener {
 	private Goal goal;
 	private int score = 0;
 	
+	private Snake parent;
 	private JLabel statusbar;
 	
 	//private Difficulty diff = new Difficulty();
@@ -29,12 +32,13 @@ public class Board extends JPanel implements ActionListener {
 	private boolean setup = false;
 	private boolean newGoal = false;
 	private boolean hit = false;
+	private boolean isRunning = false;
 	
 	public Board(Snake parent) {
-		initBoard(parent);
+		this.parent = parent;
 	}
 	
-	private void initBoard(Snake parent) {
+	private void initBoard() {
 		timer = new Timer(100, this);
 		timer.start();
 		
@@ -46,8 +50,11 @@ public class Board extends JPanel implements ActionListener {
 		
 	}
 	
-	private void doDrawing(Graphics g) {
-		Dimension size = getSize();
+	private void drawStart(Graphics g) {
+		
+	}
+	
+	private void drawGame(Graphics g) {
 		
 		if(!setup) {
 			setup = setupBoard();
@@ -61,6 +68,24 @@ public class Board extends JPanel implements ActionListener {
 		drawPlayer(g);
 	}
 	
+	private void drawEnd(Graphics g) {
+		Dimension size = getSize();
+		Font font =  new Font("Verdana", Font.PLAIN, 16);
+		g.setFont(font);
+		g.setColor(Color.WHITE);
+		
+		FontMetrics fontMetric = g.getFontMetrics();
+		
+		String overStr = "Game Over";
+		String scoreStr = "Your score: " + score;
+		
+		Rectangle2D overRect = fontMetric.getStringBounds(overStr, g);
+		Rectangle2D scoreRect = fontMetric.getStringBounds(scoreStr, g);
+		
+		g.drawString(overStr, (int) (size.getWidth() - overRect.getWidth()) / 2, (int) (size.getHeight() - overRect.getHeight()) / 2);
+		g.drawString(scoreStr, (int) (size.getWidth() - scoreRect.getWidth()) / 2, (int) ((size.getHeight() - scoreRect.getHeight()) / 2) + (int) (overRect.getHeight() + 10));
+	}
+	
 	private boolean setupBoard() {
 		Dimension size = getSize();
 		
@@ -72,6 +97,8 @@ public class Board extends JPanel implements ActionListener {
 	
 	private boolean updateBoard() {
 		Dimension size = getSize();
+		
+		System.out.println("yes");
 		
 		setupGoal(size);
 		updateScore();
@@ -116,31 +143,48 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	public void start() {
+		initBoard();
+		//setupBoard();
+		isRunning = true;
 		repaint();
+		
+	}
+	
+	public void end() {
+		timer.stop();
+		isRunning = false;
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		doDrawing(g);
+		if(isRunning) {
+			drawGame(g);
+		} else {
+			drawEnd(g);
+		}
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		player.move(squareSize);
-		Dimension size = getSize();
-		
-		newGoal = player.detectGoalCollision(goal);
-		hit = player.detectWallCollision(size);
-		if(hit != true) {
-			hit = player.detectSelfCollision();
+		if(isRunning) {
+			if(player != null) {
+				player.move(squareSize);
+				Dimension size = getSize();
+				
+				newGoal = player.detectGoalCollision(goal);
+				hit = player.detectWallCollision(size);
+				if(hit != true) {
+					hit = player.detectSelfCollision();
+				}
+				
+				if(hit == true) {
+					end();
+				}
+			}
+			
+			repaint();
 		}
-		
-		if(hit == true) {
-			timer.stop();
-		}
-		
-		repaint();
 	}
 	
 	class SAdapter extends KeyAdapter {
