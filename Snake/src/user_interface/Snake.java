@@ -15,10 +15,13 @@ import javax.swing.*;
 public class Snake extends JFrame implements ActionListener {
 	
 	private JLabel statusbar;
-	private JButton startBtn;
 	
 	private JPanel menu;
 	private Board game;
+	
+	private Difficulty easy = new Difficulty(200, 3);
+	private Difficulty medium = new Difficulty(100, 5);
+	private Difficulty hard  = new Difficulty(50, 8);
 	
 	public Snake() {
 		initUI();
@@ -41,17 +44,27 @@ public class Snake extends JFrame implements ActionListener {
 	private void createMenuBar() {
 		menu = new JPanel();
 		
-		startBtn = new JButton("Start Game");
-		startBtn.setActionCommand("Start");
-		startBtn.addActionListener(this);
+		JButton easyBtn = new JButton("Easy");
+		easyBtn.setActionCommand("Easy");
+		easyBtn.addActionListener(this);
 		
-		menu.add(startBtn);
+		JButton medBtn = new JButton("Medium");
+		medBtn.setActionCommand("Medium");
+		medBtn.addActionListener(this);
+		
+		JButton hardBtn = new JButton("Hard");
+		hardBtn.setActionCommand("Hard");
+		hardBtn.addActionListener(this);
+		
+		menu.add(easyBtn);
+		menu.add(medBtn);
+		menu.add(hardBtn);
 		
 		add(menu, BorderLayout.NORTH);
 	}
 	
-	private void startGame() {
-		game = new Board(this);
+	private void startGame(Difficulty diff) {
+		game = new Board(this, diff);
 		add(game);
 		game.add(statusbar, BorderLayout.NORTH);
 		game.start();
@@ -70,8 +83,12 @@ public class Snake extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Start")) {
-			startGame();
+		if(e.getActionCommand().equals("Easy")) {
+			startGame(easy);
+		} else if(e.getActionCommand().equals("Medium")) {
+			startGame(medium);
+		} else if(e.getActionCommand().equals("Hard")) {
+			startGame(hard);
 		}
 	}
 

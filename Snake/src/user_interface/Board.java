@@ -11,8 +11,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
+
 import sun.audio.*;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import game_objects.*;
@@ -24,13 +28,10 @@ public class Board extends JPanel implements ActionListener {
 	private Player player;
 	private Goal goal;
 	private int score = 0;
+	private Difficulty diff;
 	
 	private Snake parent;
 	private JLabel statusbar;
-	
-	private ContinuousAudioDataStream eat;
-	
-	//private Difficulty diff = new Difficulty();
 	
 	// Flags
 	private boolean setup = false;
@@ -38,12 +39,13 @@ public class Board extends JPanel implements ActionListener {
 	private boolean hit = false;
 	private boolean isRunning = false;
 	
-	public Board(Snake parent) {
+	public Board(Snake parent, Difficulty diff) {
 		this.parent = parent;
+		this.diff = diff;
 	}
 	
 	private void initBoard() {
-		timer = new Timer(100, this);
+		timer = new Timer(diff.getSpeedMS(), this);
 		timer.start();
 		
 		statusbar = parent.getStatusbar();
@@ -52,23 +54,7 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
-		try {
-			String eatFile = "resources/eat.wav";
-			InputStream in = new FileInputStream(eatFile);
-			
-			AudioStream eatStream = new AudioStream(in);
-			
-			AudioData data = eatStream.getData();
-			ContinuousAudioDataStream  eat = new ContinuousAudioDataStream (data);
-			
-		} catch(IOException e) {
-			System.out.println(e);
-		}
-		
-	}
-	
-	private void drawStart(Graphics g) {
-		
+		loopSound("tune.wav");
 	}
 	
 	private void drawGame(Graphics g) {
@@ -111,8 +97,6 @@ public class Board extends JPanel implements ActionListener {
 	private boolean updateBoard() {
 		Dimension size = getSize();
 		
-		System.out.println(size);
-		
 		setupGoal(size);
 		updateScore();
 		player.addSegment();
@@ -124,7 +108,7 @@ public class Board extends JPanel implements ActionListener {
 	private void setupPlayer(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
-		player = new Player(randX, randY, squareSize);
+		player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
 	}
 	
 	private boolean setupGoal(Dimension size) {
@@ -155,6 +139,32 @@ public class Board extends JPanel implements ActionListener {
 		g.fillRect(goal.getPosX(), goal.getPosY(), squareSize, squareSize);
 	}
 	
+	private void playSound(String file) {
+		try {
+			Clip clip = AudioSystem.getClip();
+			File soundFile = new File("resources/" + file);
+	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile);
+			clip.open(inputStream);
+			clip.start();
+	        
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	private void loopSound(String file) {
+		try {
+			Clip clip = AudioSystem.getClip();
+			File soundFile = new File("resources/" + file);
+	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile);
+			clip.open(inputStream);
+			clip.loop(Integer.MAX_VALUE);
+	        
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
 	public void start() {
 		initBoard();
 		isRunning = true;
@@ -181,6 +191,8 @@ public class Board extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(isRunning) {
 			if(player != null) {
+				//AudioPlayer.player.stop(eat);
+				
 				player.move(squareSize);
 				Dimension size = getSize();
 				
@@ -191,8 +203,7 @@ public class Board extends JPanel implements ActionListener {
 				}
 				
 				if(newGoal) {
-					AudioPlayer.player.start(eat);
-					AudioPlayer.player.stop(eat);
+					playSound("eat.wav");
 					updateBoard();
 				}
 				

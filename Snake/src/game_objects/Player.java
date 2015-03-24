@@ -27,6 +27,7 @@ public class Player {
 		this.posX = posX;
 		this.posY = posY;
 		this.squareSize = squareSize;
+		this.numSegments = numSegments;
 		
 		for(int i = 0; i < numSegments; i++) {
 			Segment seg = new Segment(posX + (i * squareSize), posY);
