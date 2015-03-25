@@ -8,12 +8,12 @@ import user_interface.Move;
 
 public class Player {
 	
-	private int posX;
-	private int posY;
-	private int numSegments = 3;
-	private Move direction = Move.UP;
-	private ArrayList<Segment> segments = new ArrayList<Segment>();
-	private int squareSize = 10;
+	protected int posX;
+	protected int posY;
+	protected int numSegments = 3;
+	protected Move direction = Move.UP;
+	protected ArrayList<Segment> segments = new ArrayList<Segment>();
+	protected int squareSize = 10;
 	
 	private final static HashMap<Move, Move> oppositeDirection = new HashMap<Move, Move>();
 	static {
@@ -132,6 +132,9 @@ public class Player {
 			}
 		}
 		return false;
+	}
+	
+	public void setGoal(Goal goal) {
 	}
 	
 	@Override

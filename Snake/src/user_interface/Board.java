@@ -38,6 +38,7 @@ public class Board extends JPanel implements ActionListener {
 	private boolean newGoal = false;
 	private boolean hit = false;
 	private boolean isRunning = false;
+	private boolean isComputer = true;
 	
 	public Board(Snake parent, Difficulty diff) {
 		this.parent = parent;
@@ -108,13 +109,21 @@ public class Board extends JPanel implements ActionListener {
 	private void setupPlayer(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
-		player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
+		if(isComputer) {
+			player = new Computer(randX, randY, squareSize, diff.getSegmentsStart(), this);
+		} else {
+			player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
+		}
 	}
 	
 	private boolean setupGoal(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
 		goal = new Goal(randX, randY);
+		
+		if(isComputer) {
+			player.setGoal(goal);
+		}
 		
 		return false;
 	}
@@ -234,7 +243,9 @@ public class Board extends JPanel implements ActionListener {
 					dir = Move.LEFT;
 					break;
 			}
-			player.setDirection(dir);
+			if(!isComputer) {
+				player.setDirection(dir);
+			}
 		}
 		
 	}
