@@ -182,11 +182,46 @@ public class Board extends JPanel implements ActionListener {
 								img = ImageIO.read(new File(imageDir + "body-left.png"));
 							}
 						} else {
-							if(prevSegment.getPosY() == seg.getPosY() && nextSegment.getPosX() == seg.getPosX()) {
-								
+							if((prevSegment.getPosX() < seg.getPosX()
+									&& prevSegment.getPosY() == seg.getPosY()
+									&& nextSegment.getPosY() > seg.getPosY()
+									&& nextSegment.getPosX() == seg.getPosX())
+									||
+									(nextSegment.getPosX() < seg.getPosX()
+									&& nextSegment.getPosY() == seg.getPosY()
+									&& prevSegment.getPosY() > seg.getPosY()
+									&& prevSegment.getPosX() == seg.getPosX())) {
 								img = ImageIO.read(new File(imageDir + "corner-left-down.png"));
-							} else if(prevSegment.getPosX() == seg.getPosX() && nextSegment.getPosY() == seg.getPosY()) {
+							} else if((prevSegment.getPosX() == seg.getPosX()
+									&& prevSegment.getPosY() < seg.getPosY()
+									&& nextSegment.getPosY() == seg.getPosY()
+									&& nextSegment.getPosX() > seg.getPosX())
+									||
+									(nextSegment.getPosX() == seg.getPosX()
+									&& nextSegment.getPosY() < seg.getPosY()
+									&& prevSegment.getPosY() == seg.getPosY()
+									&& prevSegment.getPosX() > seg.getPosX())) {
 								img = ImageIO.read(new File(imageDir + "corner-right-up.png"));
+							} else if((prevSegment.getPosX() > seg.getPosX()
+									&& prevSegment.getPosY() == seg.getPosY()
+									&& nextSegment.getPosY() > seg.getPosY()
+									&& nextSegment.getPosX() == seg.getPosX())
+									||
+									(nextSegment.getPosX() > seg.getPosX()
+									&& nextSegment.getPosY() == seg.getPosY()
+									&& prevSegment.getPosY() > seg.getPosY()
+									&& prevSegment.getPosX() == seg.getPosX())) {
+								img = ImageIO.read(new File(imageDir + "corner-down-right.png"));
+							} else if((prevSegment.getPosX() == seg.getPosX()
+									&& prevSegment.getPosY() < seg.getPosY()
+									&& nextSegment.getPosY() == seg.getPosY()
+									&& nextSegment.getPosX() < seg.getPosX())
+									||
+									(nextSegment.getPosX() == seg.getPosX()
+									&& nextSegment.getPosY() < seg.getPosY()
+									&& prevSegment.getPosY() == seg.getPosY()
+									&& prevSegment.getPosX() < seg.getPosX())) {
+								img = ImageIO.read(new File(imageDir + "corner-up-left.png"));
 							}
 							//img = ImageIO.read(new File(imageDir + "corner-up-left.png"));
 						}
