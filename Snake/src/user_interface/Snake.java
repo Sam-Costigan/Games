@@ -19,9 +19,9 @@ public class Snake extends JFrame implements ActionListener {
 	private JPanel menu;
 	private Board game;
 	
-	private Difficulty easy = new Difficulty(200, 3);
-	private Difficulty medium = new Difficulty(100, 5);
-	private Difficulty hard  = new Difficulty(50, 8);
+	private Difficulty easy = new Difficulty(200, 3, "tune-easy.wav");
+	private Difficulty medium = new Difficulty(100, 5, "tune-med.wav");
+	private Difficulty hard  = new Difficulty(50, 8, "tune-hard.wav");
 	
 	public Snake() {
 		initUI();
@@ -35,10 +35,11 @@ public class Snake extends JFrame implements ActionListener {
 		
 		createMenuBar();
 		
-		setSize(416,438);
+		setSize(406,428);
 		setTitle("Snake");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		setResizable(false);
 	}
 	
 	private void createMenuBar() {

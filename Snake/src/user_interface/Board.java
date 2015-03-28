@@ -5,15 +5,18 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
+import java.util.ArrayList;
 
 import sun.audio.*;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -24,7 +27,7 @@ import game_objects.*;
 public class Board extends JPanel implements ActionListener {
 	
 	private Timer timer;
-	private static final int squareSize = 10;
+	private static final int squareSize = 20;
 	private Player player;
 	private Goal goal;
 	private int score = 0;
@@ -38,6 +41,8 @@ public class Board extends JPanel implements ActionListener {
 	private boolean newGoal = false;
 	private boolean hit = false;
 	private boolean isRunning = false;
+	
+	private String imageDir = "resources/images/";
 	
 	public Board(Snake parent, Difficulty diff) {
 		this.parent = parent;
@@ -54,7 +59,7 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
-		loopSound("tune.wav");
+		loopSound(diff.getTune());
 	}
 	
 	private void drawGame(Graphics g) {
@@ -63,12 +68,20 @@ public class Board extends JPanel implements ActionListener {
 			setup = setupBoard();
 		}
 		
+		try {
+			Image img = ImageIO.read(new File(imageDir + "background.png"));
+			g.drawImage(img, 0, 0, null);
+		} catch(IOException e) {
+			System.out.println(e);
+		}
+		
 		drawGoal(g);
 		drawPlayer(g);
 	}
 	
 	private void drawEnd(Graphics g) {
 		Dimension size = getSize();
+		
 		Font font =  new Font("Verdana", Font.PLAIN, 16);
 		g.setFont(font);
 		g.setColor(Color.WHITE);
@@ -106,14 +119,14 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	private void setupPlayer(Dimension size) {
-		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
-		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
+		int randX = roundUp((int) (Math.random() * size.getWidth()), squareSize);
+		int randY = roundUp((int) (Math.random() * size.getHeight()), squareSize);
 		player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
 	}
 	
 	private boolean setupGoal(Dimension size) {
-		int randX = roundUp((int) (Math.random() * size.getWidth()), 10);
-		int randY = roundUp((int) (Math.random() * size.getHeight()), 10);
+		int randX = roundUp((int) (Math.random() * size.getWidth()), squareSize);
+		int randY = roundUp((int) (Math.random() * size.getHeight()), squareSize);
 		goal = new Goal(randX, randY);
 		
 		return false;
@@ -129,20 +142,80 @@ public class Board extends JPanel implements ActionListener {
 	
 	private void drawPlayer(Graphics g) {
 		g.setColor(new Color(0,110,255));
-		for(Segment seg : player.getSegments()) {
-			g.fillRect(seg.getPosX(), seg.getPosY(), squareSize, squareSize);
+		int count = 0;
+		ArrayList<Segment> segments = player.getSegments();
+		for(Segment seg : segments) {
+			if(count == 0) {
+				try {
+					Move direction = player.getDirection();
+					Image img = null;
+					if(direction.equals(Move.UP)) {
+						img = ImageIO.read(new File(imageDir + "head-up.png"));
+					} else if(direction.equals(Move.DOWN)) {
+						img = ImageIO.read(new File(imageDir + "head-down.png"));
+					} else if(direction.equals(Move.LEFT)) {
+						img = ImageIO.read(new File(imageDir + "head-left.png"));
+					} else {
+						img = ImageIO.read(new File(imageDir + "head-right.png"));
+					}
+					g.drawImage(img, seg.getPosX(), seg.getPosY(), null);
+				} catch(IOException e) {
+					System.out.println(e);
+				}
+			} else {
+				try {
+					if((count + 1) < segments.size()) {
+						Segment prevSegment = segments.get(count - 1);
+						Segment nextSegment = segments.get(count + 1);
+						Image img = null;
+						
+						if(prevSegment.getPosX() == seg.getPosX() && nextSegment.getPosX() == seg.getPosX()) {
+							if(count % 2 != 0) {
+								img = ImageIO.read(new File(imageDir + "body-up.png"));
+							} else {
+								img = ImageIO.read(new File(imageDir + "body-down.png"));
+							}
+						} else if(prevSegment.getPosY() == seg.getPosY() && nextSegment.getPosY() == seg.getPosY()) {
+							if(count % 2 != 0) {
+								img = ImageIO.read(new File(imageDir + "body-right.png"));
+							} else {
+								img = ImageIO.read(new File(imageDir + "body-left.png"));
+							}
+						} else {
+							if(prevSegment.getPosY() == seg.getPosY() && nextSegment.getPosX() == seg.getPosX()) {
+								
+								img = ImageIO.read(new File(imageDir + "corner-left-down.png"));
+							} else if(prevSegment.getPosX() == seg.getPosX() && nextSegment.getPosY() == seg.getPosY()) {
+								img = ImageIO.read(new File(imageDir + "corner-right-up.png"));
+							}
+							//img = ImageIO.read(new File(imageDir + "corner-up-left.png"));
+						}
+						
+						g.drawImage(img, seg.getPosX(), seg.getPosY(), null);
+					}
+				} catch(IOException e) {
+					System.out.println(e);
+				}
+			}
+			
+			count++;
 		}
 	}
 	
 	private void drawGoal(Graphics g) {
 		g.setColor(new Color(210,0,0));
-		g.fillRect(goal.getPosX(), goal.getPosY(), squareSize, squareSize);
+		try {
+			Image img = ImageIO.read(new File("resources/images/goal.png"));
+			g.drawImage(img, goal.getPosX(), goal.getPosY(), null);
+		} catch(IOException e) {
+			System.out.println(e);
+		}
 	}
 	
 	private void playSound(String file) {
 		try {
 			Clip clip = AudioSystem.getClip();
-			File soundFile = new File("resources/" + file);
+			File soundFile = new File("resources/sounds/" + file);
 	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile);
 			clip.open(inputStream);
 			clip.start();
@@ -155,7 +228,7 @@ public class Board extends JPanel implements ActionListener {
 	private void loopSound(String file) {
 		try {
 			Clip clip = AudioSystem.getClip();
-			File soundFile = new File("resources/" + file);
+			File soundFile = new File("resources/sounds/" + file);
 	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile);
 			clip.open(inputStream);
 			clip.loop(Integer.MAX_VALUE);

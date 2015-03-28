@@ -13,7 +13,7 @@ public class Player {
 	private int numSegments = 3;
 	private Move direction = Move.UP;
 	private ArrayList<Segment> segments = new ArrayList<Segment>();
-	private int squareSize = 10;
+	private int squareSize = 20;
 	
 	private final static HashMap<Move, Move> oppositeDirection = new HashMap<Move, Move>();
 	static {
@@ -58,6 +58,9 @@ public class Player {
 	}
 	public ArrayList<Segment> getSegments() {
 		return segments;
+	}
+	public Move getDirection() {
+		return this.direction;
 	}
 
 	public void setPosX(int posX) {
