@@ -2,19 +2,14 @@ package user_interface;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.util.ArrayList;
-
-import sun.audio.*;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -32,6 +27,7 @@ public class Board extends JPanel implements ActionListener {
 	private Goal goal;
 	private int score = 0;
 	private Difficulty diff;
+	private Clip tune = null;
 	
 	private Snake parent;
 	private JLabel statusbar;
@@ -59,7 +55,7 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
-		loopSound(diff.getTune());
+		tune = loopSound(diff.getTune());
 	}
 	
 	private void drawGame(Graphics g) {
@@ -77,25 +73,6 @@ public class Board extends JPanel implements ActionListener {
 		
 		drawGoal(g);
 		drawPlayer(g);
-	}
-	
-	private void drawEnd(Graphics g) {
-		Dimension size = getSize();
-		
-		Font font =  new Font("Verdana", Font.PLAIN, 16);
-		g.setFont(font);
-		g.setColor(Color.WHITE);
-		
-		FontMetrics fontMetric = g.getFontMetrics();
-		
-		String overStr = "Game Over";
-		String scoreStr = "Your score: " + score;
-		
-		Rectangle2D overRect = fontMetric.getStringBounds(overStr, g);
-		Rectangle2D scoreRect = fontMetric.getStringBounds(scoreStr, g);
-		
-		g.drawString(overStr, (int) (size.getWidth() - overRect.getWidth()) / 2, (int) (size.getHeight() - overRect.getHeight()) / 2);
-		g.drawString(scoreStr, (int) (size.getWidth() - scoreRect.getWidth()) / 2, (int) ((size.getHeight() - scoreRect.getHeight()) / 2) + (int) (overRect.getHeight() + 10));
 	}
 	
 	private boolean setupBoard() {
@@ -273,17 +250,20 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 	
-	private void loopSound(String file) {
+	private Clip loopSound(String file) {
+		Clip clip = null;
+		
 		try {
-			Clip clip = AudioSystem.getClip();
+			clip = AudioSystem.getClip();
 			File soundFile = new File("resources/sounds/" + file);
 	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile);
 			clip.open(inputStream);
 			clip.loop(Integer.MAX_VALUE);
-	        
 		} catch(Exception e) {
 			System.out.println(e);
 		}
+		
+		 return clip;
 	}
 	
 	public void start() {
@@ -296,6 +276,8 @@ public class Board extends JPanel implements ActionListener {
 	public void end() {
 		timer.stop();
 		isRunning = false;
+		tune.stop();
+		parent.endGame(score);
 	}
 	
 	@Override
@@ -303,8 +285,6 @@ public class Board extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		if(isRunning) {
 			drawGame(g);
-		} else {
-			drawEnd(g);
 		}
 	}
 	
