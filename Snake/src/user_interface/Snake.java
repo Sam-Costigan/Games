@@ -17,6 +17,7 @@ public class Snake extends JFrame implements ActionListener {
 	private JLabel statusbar;
 	
 	private JPanel menu;
+	private JPanel endGame;
 	private Board game;
 	
 	private Difficulty easy = new Difficulty(200, 3, "tune-easy.wav");
@@ -36,7 +37,7 @@ public class Snake extends JFrame implements ActionListener {
 		
 		createMenuBar();
 		
-		setSize(406,428);
+		setSize(606,628);
 		setTitle("Snake");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -67,7 +68,7 @@ public class Snake extends JFrame implements ActionListener {
 		menu.add(hardBtn);
 		menu.add(computerBtn);
 		
-		add(menu, BorderLayout.NORTH);
+		add(menu, BorderLayout.CENTER);
 	}
 	
 	private void startGame(Difficulty diff) {
@@ -77,6 +78,22 @@ public class Snake extends JFrame implements ActionListener {
 		game.start();
 		
 		menu.setVisible(false);
+	}
+	
+	public void endGame(int score) {
+		game.setVisible(false);
+		menu.setVisible(true);
+		
+		endGame = new JPanel();
+		
+		JLabel overText = new JLabel("Game Over!");
+		JLabel scoreText = new JLabel("Your score: " + score);
+		
+		endGame.add(overText);
+		endGame.add(scoreText);
+		
+		endGame.setVisible(true);
+		add(endGame, BorderLayout.CENTER);
 	}
 	
 	public JLabel getStatusbar() {
