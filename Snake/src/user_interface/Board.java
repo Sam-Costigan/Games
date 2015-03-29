@@ -41,12 +41,14 @@ public class Board extends JPanel implements ActionListener {
 	private boolean newGoal = false;
 	private boolean hit = false;
 	private boolean isRunning = false;
+	private boolean isComputer = false;
 	
 	private String imageDir = "resources/images/";
 	
 	public Board(Snake parent, Difficulty diff) {
 		this.parent = parent;
 		this.diff = diff;
+		this.isComputer = diff.getComputer();
 	}
 	
 	private void initBoard() {
@@ -128,6 +130,10 @@ public class Board extends JPanel implements ActionListener {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), squareSize);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), squareSize);
 		goal = new Goal(randX, randY);
+		
+		if(isComputer) {
+			player.setGoal(goal);
+		}
 		
 		return false;
 	}
@@ -307,7 +313,9 @@ public class Board extends JPanel implements ActionListener {
 					dir = Move.LEFT;
 					break;
 			}
-			player.setDirection(dir);
+			if(!isComputer) {
+				player.setDirection(dir);
+			}
 		}
 		
 	}

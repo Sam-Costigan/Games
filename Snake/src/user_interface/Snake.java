@@ -22,6 +22,7 @@ public class Snake extends JFrame implements ActionListener {
 	private Difficulty easy = new Difficulty(200, 3, "tune-easy.wav");
 	private Difficulty medium = new Difficulty(100, 5, "tune-med.wav");
 	private Difficulty hard  = new Difficulty(50, 8, "tune-hard.wav");
+	private Difficulty hardComputer  = new Difficulty(50, 8, "tune-hard.wav", true);
 	
 	public Snake() {
 		initUI();
@@ -57,9 +58,14 @@ public class Snake extends JFrame implements ActionListener {
 		hardBtn.setActionCommand("Hard");
 		hardBtn.addActionListener(this);
 		
+		JButton computerBtn = new JButton("Watch Computer");
+		computerBtn.setActionCommand("Hard");
+		computerBtn.addActionListener(this);
+		
 		menu.add(easyBtn);
 		menu.add(medBtn);
 		menu.add(hardBtn);
+		menu.add(computerBtn);
 		
 		add(menu, BorderLayout.NORTH);
 	}
