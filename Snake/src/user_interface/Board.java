@@ -223,7 +223,21 @@ public class Board extends JPanel implements ActionListener {
 									&& prevSegment.getPosX() < seg.getPosX())) {
 								img = ImageIO.read(new File(imageDir + "corner-up-left.png"));
 							}
-							//img = ImageIO.read(new File(imageDir + "corner-up-left.png"));
+						}
+						
+						g.drawImage(img, seg.getPosX(), seg.getPosY(), null);
+					} else {
+						Segment prevSegment = segments.get(count - 1);
+						Image img = null;
+						
+						if(prevSegment.getPosY() == seg.getPosY() && prevSegment.getPosX() > seg.getPosX()) {
+							img = ImageIO.read(new File(imageDir + "tail-right.png"));
+						} else if(prevSegment.getPosY() == seg.getPosY() && prevSegment.getPosX() < seg.getPosX()) {
+							img = ImageIO.read(new File(imageDir + "tail-left.png"));
+						} else if(prevSegment.getPosY() > seg.getPosY() && prevSegment.getPosX() == seg.getPosX()) {
+							img = ImageIO.read(new File(imageDir + "tail-down.png"));
+						} else {
+							img = ImageIO.read(new File(imageDir + "tail-up.png"));
 						}
 						
 						g.drawImage(img, seg.getPosX(), seg.getPosY(), null);
@@ -232,7 +246,6 @@ public class Board extends JPanel implements ActionListener {
 					System.out.println(e);
 				}
 			}
-			
 			count++;
 		}
 	}

@@ -35,7 +35,7 @@ public class Snake extends JFrame implements ActionListener {
 		
 		createMenuBar();
 		
-		setSize(406,428);
+		setSize(606,628);
 		setTitle("Snake");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
