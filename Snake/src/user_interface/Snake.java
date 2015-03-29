@@ -60,7 +60,7 @@ public class Snake extends JFrame implements ActionListener {
 		hardBtn.addActionListener(this);
 		
 		JButton computerBtn = new JButton("Watch Computer");
-		computerBtn.setActionCommand("Hard");
+		computerBtn.setActionCommand("HardComp");
 		computerBtn.addActionListener(this);
 		
 		menu.add(easyBtn);
@@ -113,7 +113,10 @@ public class Snake extends JFrame implements ActionListener {
 			startGame(medium);
 		} else if(e.getActionCommand().equals("Hard")) {
 			startGame(hard);
+		} else if(e.getActionCommand().equals("HardComp")) {
+			startGame(hardComputer);
 		}
+		
 	}
 
 }

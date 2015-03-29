@@ -57,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
-		tune = loopSound(diff.getTune());
+		//tune = loopSound(diff.getTune());
 	}
 	
 	private void drawGame(Graphics g) {
@@ -100,7 +100,11 @@ public class Board extends JPanel implements ActionListener {
 	private void setupPlayer(Dimension size) {
 		int randX = roundUp((int) (Math.random() * size.getWidth()), squareSize);
 		int randY = roundUp((int) (Math.random() * size.getHeight()), squareSize);
-		player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
+		if(isComputer) {
+			player = new Computer(randX, randY, squareSize, diff.getSegmentsStart(), this);
+		} else {
+			player = new Player(randX, randY, squareSize, diff.getSegmentsStart());
+		}
 	}
 	
 	private boolean setupGoal(Dimension size) {
@@ -282,7 +286,7 @@ public class Board extends JPanel implements ActionListener {
 	public void end() {
 		timer.stop();
 		isRunning = false;
-		tune.stop();
+		//tune.stop();
 		parent.endGame(score);
 	}
 	
