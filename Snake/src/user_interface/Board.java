@@ -57,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		addKeyListener(new SAdapter());
 		
-		//tune = loopSound(diff.getTune());
+		tune = loopSound(diff.getTune());
 	}
 	
 	private void drawGame(Graphics g) {
@@ -286,7 +286,7 @@ public class Board extends JPanel implements ActionListener {
 	public void end() {
 		timer.stop();
 		isRunning = false;
-		//tune.stop();
+		tune.stop();
 		parent.endGame(score);
 	}
 	
