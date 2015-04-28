@@ -98,8 +98,8 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	private void setupPlayer(Dimension size) {
-		int randX = roundUp((int) (Math.random() * size.getWidth()), squareSize);
-		int randY = roundUp((int) (Math.random() * size.getHeight()), squareSize);
+		int randX = roundUp((int) (size.getWidth() / 2), squareSize);
+		int randY = roundUp((int) (size.getHeight() / 2), squareSize);
 		if(isComputer) {
 			player = new Computer(randX, randY, squareSize, diff.getSegmentsStart(), this);
 		} else {
