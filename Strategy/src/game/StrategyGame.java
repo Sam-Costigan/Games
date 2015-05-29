@@ -28,6 +28,7 @@ public class StrategyGame extends JPanel {
 	private List<Team> teams = new ArrayList<Team>();
 	private Map<Location, Square> squares = new HashMap<Location, Square>();
 	private Unit activeUnit = null;
+	private Square activeSquare = null;
 	
 	public StrategyGame() {
 		Team topTeam = new Team();
@@ -57,6 +58,13 @@ public class StrategyGame extends JPanel {
 					}
 					target.getUnit().setActive(true);
 					activeUnit = target.getUnit();
+					activeSquare = target;
+				} else if(activeUnit != null) {
+					Location newPos = position.makeRoundedLocation();
+					target = new Square(newPos, activeUnit);
+					activeUnit.setPosition(newPos);
+					squares.remove(activeSquare.getPosition());
+					squares.put(newPos, target);
 				}
 				repaint();
 			}

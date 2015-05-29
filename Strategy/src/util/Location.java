@@ -27,6 +27,21 @@ public class Location {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public Location makeRoundedLocation() {
+		int x = floor(this.x, StrategyGame.squareSize);
+		int y = floor(this.y, StrategyGame.squareSize);
+		
+		return new Location(x, y);
+	}
+	
+	private int floor(double num, int multipleOf) {
+		return (int) Math.floor((num + multipleOf/2) / multipleOf) * multipleOf;
+	}
+	
+	private int round(double num, int multipleOf) {
+		return (int) Math.round((num + multipleOf/2) / multipleOf) * multipleOf;
+	}
 
 	@Override
 	public String toString() {
@@ -40,10 +55,6 @@ public class Location {
 		result = prime * result + round(x, StrategyGame.squareSize);
 		result = prime * result + round(y, StrategyGame.squareSize);
 		return result;
-	}
-	
-	private int round(double num, int multipleOf) {
-		return (int) Math.round((num + multipleOf/2) / multipleOf) * multipleOf;
 	}
 
 	@Override
