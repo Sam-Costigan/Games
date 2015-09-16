@@ -17,7 +17,6 @@ import game.StrategyGame;
 public class Strategy extends JFrame implements ActionListener {
 	
 	private JPanel menu;
-	private JPanel endGame;
 	private StrategyGame game;
 	
 	public Strategy() {
@@ -27,11 +26,12 @@ public class Strategy extends JFrame implements ActionListener {
 	private void initUI() {
 		createMenuBar();
 		
-		setSize(606,628);
 		setTitle("Strategy");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setResizable(false);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		setVisible(true);
+		setBackground(Color.BLACK);
 	}
 	
 	private void createMenuBar() {

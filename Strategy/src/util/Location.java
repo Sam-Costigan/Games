@@ -1,7 +1,5 @@
 package util;
 
-import game.StrategyGame;
-
 public class Location {
 	
 	private int x;
@@ -27,21 +25,6 @@ public class Location {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	public Location makeRoundedLocation() {
-		int x = floor(this.x, StrategyGame.squareSize);
-		int y = floor(this.y, StrategyGame.squareSize);
-		
-		return new Location(x, y);
-	}
-	
-	private int floor(double num, int multipleOf) {
-		return (int) Math.floor((num + multipleOf/2) / multipleOf) * multipleOf;
-	}
-	
-	private int round(double num, int multipleOf) {
-		return (int) Math.round((num + multipleOf/2) / multipleOf) * multipleOf;
-	}
 
 	@Override
 	public String toString() {
@@ -52,8 +35,8 @@ public class Location {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + round(x, StrategyGame.squareSize);
-		result = prime * result + round(y, StrategyGame.squareSize);
+		result = prime * result + Globals.round(x, Globals.squareSize);
+		result = prime * result + Globals.round(y, Globals.squareSize);
 		return result;
 	}
 
@@ -66,9 +49,9 @@ public class Location {
 		if (getClass() != obj.getClass())
 			return false;
 		Location other = (Location) obj;
-		if ((x < other.x) || (x > other.x + StrategyGame.squareSize))
+		if ((x < other.x) || (x > other.x + Globals.squareSize))
 			return false;
-		if ((y < other.y) || (y > other.y + StrategyGame.squareSize))
+		if ((y < other.y) || (y > other.y + Globals.squareSize))
 			return false;
 		return true;
 	}
