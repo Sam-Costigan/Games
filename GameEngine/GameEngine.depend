@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1442629270 source:z:\development\games\gameengine\main.cpp
+	<iostream>
+	"ErrorLogManager.h"
+	"Exception.h"
+
+1442622719 source:z:\development\games\gameengine\src\exception.cpp
+	"Exception.h"
+
+1442621695 z:\development\games\gameengine\include\exception.h
+	<string>
+	<sstream>
+	<exception>
+
+1442629732 source:z:\development\games\gameengine\src\errorlogmanager.cpp
+	"ErrorLogManager.h"
+
+1442704402 z:\development\games\gameengine\include\errorlogmanager.h
+	<string>
+	<sstream>
+	<iostream>
+	<time.h>
+	<iomanip>
+	<fstream>
+	"EngineObject.h"
+	"Exception.h"
+
+1442618812 z:\development\games\gameengine\include\engineobject.h
+
+1442629706 source:z:\development\games\gameengine\src\resource.cpp
+	"Resource.h"
+
+1442707169 z:\development\games\gameengine\include\resource.h
+	<string>
+	"EngineObject.h"
+
+1442747410 source:z:\development\games\gameengine\src\resourcemanager.cpp
+	"ResourceManager.h"
+
+1442746717 z:\development\games\gameengine\include\resourcemanager.h
+	<map>
+	<list>
+	<string>
+	<iostream>
+	"TinyXML.h"
+	"Resource.h"
+

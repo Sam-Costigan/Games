@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GameEngine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/GameEngine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinystr.cpp" />
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinystr.h" />
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinyxml.cpp" />
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinyxml.h" />
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinyxmlerror.cpp" />
+					<Add library="Z:\Programs\CppLibs\tinyxml\tinyxmlparser.cpp" />
+					<Add directory="Z:/Programs/CppLibs/tinyxml" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/GameEngine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Linker>
+			<Add directory="Z:/Programs/CppLibs/sdl2" />
+		</Linker>
+		<Unit filename="include/EngineObject.h" />
+		<Unit filename="include/ErrorLogManager.h" />
+		<Unit filename="include/Exception.h" />
+		<Unit filename="include/RenderResource.h" />
+		<Unit filename="include/Resource.h" />
+		<Unit filename="include/ResourceManager.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/ErrorLogManager.cpp" />
+		<Unit filename="src/Exception.cpp" />
+		<Unit filename="src/RenderResource.cpp" />
+		<Unit filename="src/Resource.cpp" />
+		<Unit filename="src/ResourceManager.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
