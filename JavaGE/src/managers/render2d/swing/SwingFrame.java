@@ -1,11 +1,11 @@
-package managers.render.swing;
+package managers.render2d.swing;
 
 import java.util.List;
 
 import javax.swing.JFrame;
 
-import managers.render.RenderObject;
-import managers.render.RenderResource;
+import managers.render2d.RenderObject2D;
+import managers.render2d.RenderResource2D;
 
 public class SwingFrame extends JFrame {
 	
@@ -13,7 +13,7 @@ public class SwingFrame extends JFrame {
 	
 	private SwingPanel panel;
 
-	public SwingFrame(List<RenderObject> resources) {
+	public SwingFrame(List<RenderObject2D> resources) {
 		panel = new SwingPanel(resources);
 		add(panel);
 	}

@@ -1,4 +1,4 @@
-package managers.render;
+package managers.render2d;
 
 import java.awt.Image;
 import java.io.File;
@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 import managers.resources.Resource;
 
-public class RenderResource extends Resource {
+public class RenderResource2D extends Resource {
 	
 	private Image image;
 	

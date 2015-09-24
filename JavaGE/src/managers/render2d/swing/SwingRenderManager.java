@@ -1,4 +1,4 @@
-package managers.render.swing;
+package managers.render2d.swing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,17 +6,25 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import managers.EngineObject;
-import managers.render.RenderManager;
-import managers.render.RenderObject;
-import managers.render.RenderResource;
+import managers.render2d.RenderManager2D;
+import managers.render2d.RenderObject2D;
+import managers.render2d.RenderResource2D;
 import managers.resources.Resource;
 import managers.resources.ResourceType;
 
-public class SwingRenderManager extends EngineObject implements RenderManager {
+public class SwingRenderManager extends EngineObject implements RenderManager2D {
 	
-	SwingFrame frame;
-	List<RenderObject> resources = new ArrayList<RenderObject>();
-
+	private static SwingRenderManager manager = new SwingRenderManager();
+	
+	private SwingFrame frame;
+	private List<RenderObject2D> resources = new ArrayList<RenderObject2D>();
+	
+	protected SwingRenderManager() {}
+	
+	public static RenderManager2D getRenderManager() {
+		return manager;
+	}
+	
 	@Override
 	public boolean init(int width, int height, boolean fullscreen, String title) {
 		
@@ -38,11 +46,16 @@ public class SwingRenderManager extends EngineObject implements RenderManager {
 	
 	@Override
 	public Resource loadRenderResource(int id, String type, String filename) {
-		RenderResource res = new RenderResource();
+		RenderResource2D res = new RenderResource2D();
 		
 		res.setId(id);
 		res.setType(ResourceType.RESOURCE_GRAPHIC);
 		res.setFilename(filename);
+		
+		RenderObject2D render = new RenderObject2D();
+		render.setResource(res);
+		
+		resources.add(render);
 		
 		return res;
 	}

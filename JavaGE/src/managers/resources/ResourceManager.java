@@ -18,13 +18,13 @@ import org.xml.sax.SAXException;
 
 import managers.EngineObject;
 import managers.errors.*;
-import managers.render.RenderManager;
-import managers.render.swing.SwingRenderManager;
+import managers.render2d.RenderManager2D;
+import managers.render2d.swing.SwingRenderManager;
 
 public class ResourceManager extends EngineObject {
 	
 	private ErrorManager errM = ErrorManager.getErrorManager();
-	private RenderManager rendM = new SwingRenderManager();
+	private RenderManager2D rendM = SwingRenderManager.getRenderManager();
 	private int currentScope;
 	private int resourceCount;
 	

@@ -1,9 +1,10 @@
-package managers.render;
+package managers.render2d;
 
 import java.awt.Image;
 
-public class SpriteObject extends RenderObject {
+public class SpriteObject2D extends RenderObject2D {
 
+	public long timeLastFrame;
 	public int totalFrames;
 	public int framesPerRow;
 	public int framesPerColumn;
@@ -17,6 +18,16 @@ public class SpriteObject extends RenderObject {
 	
 	public void play() {
 		Image play = resource.getImage();
+		
+		timeLastFrame = System.currentTimeMillis();
+	}
+	
+	public void update() {
+		long timeSinceLastFrame = System.currentTimeMillis() - timeLastFrame;
+		
+		if(timeSinceLastFrame >= speed) {
+			//update
+		}
 	}
 	
 	public void setFrameRectangle(int frameNumber) {
