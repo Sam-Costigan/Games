@@ -11,11 +11,13 @@ import managers.render2d.RenderObject2D;
 import managers.render2d.RenderResource2D;
 import managers.resources.Resource;
 import managers.resources.ResourceType;
+import managers.scene2d.SceneManager2D;
 
 public class SwingRenderManager extends EngineObject implements RenderManager2D {
 	
 	private static SwingRenderManager manager = new SwingRenderManager();
 	
+	private SceneManager2D scene;
 	private SwingFrame frame;
 	private List<RenderObject2D> resources = new ArrayList<RenderObject2D>();
 	
@@ -63,6 +65,13 @@ public class SwingRenderManager extends EngineObject implements RenderManager2D 
 	@Override
 	public void update() {
 		frame.repaint();
+	}
+	
+	@Override
+	public void renderScene() {
+		if(scene != null) {
+			
+		}
 	}
 	
 }

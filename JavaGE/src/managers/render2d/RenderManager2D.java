@@ -10,4 +10,6 @@ public interface RenderManager2D {
 	
 	public void update();
 	
+	public void renderScene();
+	
 }

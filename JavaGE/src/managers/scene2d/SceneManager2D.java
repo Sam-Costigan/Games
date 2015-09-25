@@ -10,7 +10,6 @@ public class SceneManager2D extends EngineObject {
 
 	List<SceneLayer2D> layers = new ArrayList<SceneLayer2D>();
 	
-	
 	public SceneLayer2D addLayer(String name) {
 		
 		SceneLayer2D layer = findLayer(name);
